@@ -9,8 +9,8 @@ const SmoothScroll = () => {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    // axis: "y",
-    // offset: ["start end", "end end"],
+    axis: "y",
+    offset: ["start start", "0.8 0.8"],
   });
 
   useLayoutEffect(() => {
@@ -43,7 +43,7 @@ const SmoothScroll = () => {
       ref={containerRef}
       style={{ height: scrollRange }}
     >
-      <section className="sticky top-[10vh] left-0 border-[40px] border-green-300 bg-black h-[60vh] overflow-hidden">
+      <section className="sticky top-[20vh] left-0 border-[40px] border-green-300 bg-black h-[60vh] overflow-hidden">
         <motion.div
           className="flex border-yellow-300"
           ref={scrollRef}
