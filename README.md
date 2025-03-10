@@ -104,3 +104,7 @@ physics: 애니메이션 효과
 
 - **transform**: 부드러운 애니메이션을 위해 동적으로 변하는 motionValue 객체를 제공해주는 framer-motion의 훅.(컨테이너의 border의 길이는 scrollWidth에 포함되어 있지 않으므로 직접 추가해주자.)
 - **physics**: 애니메이션을 위한 객체, 지나친 관성을 지닌 애니메이션은 보여주고 싶은 컨텐츠의 요소를 벗어나게 만든다.
+
+## swiper
+
+https://swiperjs.com/react#useswiper
