@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from "react";
+import React, { RefObject, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import clsx from "clsx";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
@@ -7,32 +7,40 @@ import calcBoundaryMove from "../(lib)/calcBoundaryMove";
 
 const SmoothScroll = () => {
   const containerRef = useRef<null | HTMLDivElement>(null);
+  const topScrollRef = useRef<null | HTMLElement>(null);
   const bottomScrollRef = useRef<null | HTMLElement>(null);
 
   const lengthRulerRef = useRef<null | HTMLDivElement>(null);
-  const isBottomView = useInView(bottomScrollRef);
+  const isTopView = useInView(topScrollRef, {
+    margin: `${
+      lengthRulerRef.current ? -lengthRulerRef.current.scrollWidth : 0
+    }px 0px 0px 0px`,
+  });
 
   return (
     <div
       className={clsx(
         "pt-[5rem] pb-[10rem] transition-colors",
-        isBottomView ? "bg-indigo-900" : "bg-purple-900"
+        isTopView ? "bg-purple-900" : "bg-indigo-900"
       )}
     >
       <div
         className={clsx(
           " transition-colors flex justify-between relative",
-          isBottomView ? "bg-indigo-900" : "bg-purple-900"
+          isTopView ? "bg-purple-900" : "bg-indigo-900"
         )}
         ref={containerRef}
       >
         <Left_section
-          isBottomView={isBottomView}
+          isTopView={isTopView}
           containerRef={containerRef}
           bottomScrollRef={bottomScrollRef}
           lengthRulerRef={lengthRulerRef}
         />
-        <Right_section bottomScrollRef={bottomScrollRef} />
+        <Right_section
+          bottomScrollRef={bottomScrollRef}
+          topScrollRef={topScrollRef}
+        />
       </div>
 
       <div className={clsx("ghost", "w-[5rem] h-0")} ref={lengthRulerRef} />
@@ -41,12 +49,12 @@ const SmoothScroll = () => {
 };
 
 const Left_section = ({
-  isBottomView,
+  isTopView,
   containerRef,
   bottomScrollRef,
   lengthRulerRef,
 }: {
-  isBottomView: boolean;
+  isTopView: boolean;
   containerRef: RefObject<HTMLElement | null>;
   bottomScrollRef: RefObject<HTMLElement | null>;
   lengthRulerRef: RefObject<HTMLDivElement | null>;
@@ -55,7 +63,7 @@ const Left_section = ({
     <section
       className={clsx(
         "sticky top-[5rem] left-0 transition-colors h-max",
-        isBottomView ? "bg-indigo-900" : "bg-purple-900"
+        isTopView ? "bg-purple-900" : "bg-indigo-900"
       )}
     >
       <div className="relative flex h-[48rem] pt-[6rem] pb-[2.5rem] text-white">
@@ -63,7 +71,7 @@ const Left_section = ({
           <button
             className={clsx(
               "block bg-purple-700 font-bold shadow px-3 grow",
-              isBottomView && "opacity-75"
+              isTopView || "opacity-75"
             )}
             style={{ writingMode: "vertical-lr" }}
             onClick={() => {
@@ -80,7 +88,7 @@ const Left_section = ({
           <button
             className={clsx(
               "block bg-indigo-700 font-bold shadow px-3 grow",
-              isBottomView || "opacity-75"
+              isTopView && "opacity-75"
             )}
             style={{ writingMode: "vertical-lr" }}
             onClick={() => {
@@ -104,116 +112,104 @@ const Left_section = ({
             모든 준비가 되어있습니다.
           </h1>
           <h2 className="font-bold text-2xl pb-10">
-            {isBottomView
-              ? "게임 프로그래밍은 뭘 배우나요?"
-              : "게임 기획자는 뭘 배우나요?"}
+            {isTopView
+              ? "게임 기획자는 뭘 배우나요?"
+              : "게임 프로그래밍은 뭘 배우나요?"}
           </h2>
-          <Left_section_scrollBottom isBottomView={isBottomView} />
-          <Left_section_scrollTop isBottomView={isBottomView} />
+          <Left_section_scrollBottom isTopView={isTopView} />
+          <Left_section_scrollTop isTopView={isTopView} />
         </div>
       </div>
     </section>
   );
 };
 
-const Left_section_scrollTop = ({
-  isBottomView,
-}: {
-  isBottomView: boolean;
-}) => {
-  const slide = useRef<null | SwiperRef>(null);
+const Left_section_scrollTop = ({ isTopView }: { isTopView: boolean }) => {
+  const slider = useRef<null | SwiperRef>(null);
+  const [slideIdx, setSlideIDx] = useState(0);
   return (
-    <section hidden={isBottomView}>
-      <div>
-        <button
-          className="p-3 bg-blue-300"
-          onClick={() => {
-            const boundNum = calcBoundaryMove(
-              slide.current!.swiper.activeIndex,
-              0,
-              5
-            );
-            const current = slide.current!.swiper.activeIndex;
-            if (boundNum !== -1) {
-              slide.current!.swiper.slideTo(
-                boundNum,
-                Math.abs(boundNum - current) * 100
-              );
-              boundNum === 0
-                ? slide.current!.swiper.translateTo(-0.2, 100, true, true)
-                : slide.current!.swiper.translateTo(1.2, 100, true, true);
-
-              // slide.current!.swiper.slideTo(
-              //   0,
-              //   Math.abs(boundNum - current) * 100
-              // );
-            } else {
-              slide.current!.swiper.slideTo(0, Math.abs(0 - current) * 100);
+    <section hidden={!isTopView}>
+      <div
+        onClick={(e) => {
+          e.currentTarget.childNodes.forEach((v, idx) => {
+            if (v === e.target) {
+              {
+                const slideLength = slider.current!.swiper.slides.length / 3;
+                const next = calcBoundaryMove(
+                  slider.current!.swiper.activeIndex,
+                  idx + slideLength,
+                  slideLength,
+                  slideLength * 2 - 1
+                );
+                slider.current!.swiper.slideTo(next[0], next[1] * 300);
+                setSlideIDx(idx);
+              }
             }
-          }}
-        >
-          RPG
-        </button>
-        <button
-          className="p-3 bg-blue-300"
-          onClick={() => {
-            console.log(slide.current!.swiper.activeIndex);
-            console.log(slide.current!.swiper.slides.length);
-            slide.current!.swiper.slideTo(1, 1000);
-          }}
-        >
-          슈퍼마리오
-        </button>
-        <button
-          className="p-3 bg-blue-300"
-          onClick={() => slide.current!.swiper.slideTo(2, 1000)}
-        >
-          세븐나이츠2
-        </button>
-        <button
-          className="p-3 bg-blue-300"
-          onClick={() => slide.current!.swiper.slideTo(3, 1000)}
-        >
-          용과같이8
-        </button>
-        <button
-          className="p-3 bg-blue-300"
-          onClick={() => slide.current!.swiper.slideTo(4, 1000)}
-        >
-          다크소울3
-        </button>
-        <button
-          className="p-3 bg-blue-300"
-          onClick={() => slide.current!.swiper.slideTo(5, 1000)}
-        >
-          오딘
-        </button>
-      </div>
-      <Swiper
-        style={{ width: 486, height: 250 }}
-        spaceBetween={0}
-        slidesPerView={1}
-        loop={true}
-        ref={slide}
+          });
+        }}
       >
-        <SwiperSlide className="bg-red-900">slide1</SwiperSlide>
-        <SwiperSlide className="bg-red-800">slide2</SwiperSlide>
-        <SwiperSlide className="bg-red-700">slide3</SwiperSlide>
-        <SwiperSlide className="bg-red-600">slide4</SwiperSlide>
-        <SwiperSlide className="bg-red-500">slide5</SwiperSlide>
-        <SwiperSlide className="bg-red-400">slide6</SwiperSlide>
-      </Swiper>
+        {[
+          "RPG",
+          "슈퍼마리오",
+          "세븐나이츠2",
+          "용과같이8",
+          "다크소울3",
+          "오딘",
+        ].map((v, idx) => (
+          <button
+            className={clsx(`p-3 bg-blue-300`, {
+              "opacity-50": slideIdx !== idx,
+            })}
+            key={idx}
+          >
+            {v}
+          </button>
+        ))}
+      </div>
+      <Slider slider={slider} />
     </section>
   );
 };
 
-const Left_section_scrollBottom = ({
-  isBottomView,
-}: {
-  isBottomView: boolean;
-}) => {
+const Slider = ({ slider }: { slider: RefObject<null | SwiperRef> }) => {
   return (
-    <section hidden={!isBottomView}>
+    <Swiper
+      style={{ width: 486, height: 250 }}
+      spaceBetween={0}
+      slidesPerView={1}
+      // loop={true}
+      ref={slider}
+      initialSlide={6}
+      onSlideChangeTransitionEnd={(swiper) => {
+        if (swiper.activeIndex < 6) swiper.slideTo(swiper.activeIndex + 6, 0);
+        if (swiper.activeIndex > 11) swiper.slideTo(swiper.activeIndex - 6, 0);
+      }}
+    >
+      <SwiperSlide className="bg-red-900">slide1</SwiperSlide>
+      <SwiperSlide className="bg-red-800">slide2</SwiperSlide>
+      <SwiperSlide className="bg-red-700">slide3</SwiperSlide>
+      <SwiperSlide className="bg-red-600">slide4</SwiperSlide>
+      <SwiperSlide className="bg-red-500">slide5</SwiperSlide>
+      <SwiperSlide className="bg-red-400">slide6</SwiperSlide>
+      <SwiperSlide className="bg-red-900">slide1</SwiperSlide>
+      <SwiperSlide className="bg-red-800">slide2</SwiperSlide>
+      <SwiperSlide className="bg-red-700">slide3</SwiperSlide>
+      <SwiperSlide className="bg-red-600">slide4</SwiperSlide>
+      <SwiperSlide className="bg-red-500">slide5</SwiperSlide>
+      <SwiperSlide className="bg-red-400">slide6</SwiperSlide>
+      <SwiperSlide className="bg-red-900">slide1</SwiperSlide>
+      <SwiperSlide className="bg-red-800">slide2</SwiperSlide>
+      <SwiperSlide className="bg-red-700">slide3</SwiperSlide>
+      <SwiperSlide className="bg-red-600">slide4</SwiperSlide>
+      <SwiperSlide className="bg-red-500">slide5</SwiperSlide>
+      <SwiperSlide className="bg-red-400">slide6</SwiperSlide>
+    </Swiper>
+  );
+};
+
+const Left_section_scrollBottom = ({ isTopView }: { isTopView: boolean }) => {
+  return (
+    <section hidden={isTopView}>
       <iframe
         width="486"
         height="250"
@@ -227,12 +223,14 @@ const Left_section_scrollBottom = ({
 
 const Right_section = ({
   bottomScrollRef,
+  topScrollRef,
 }: {
   bottomScrollRef: RefObject<HTMLElement | null>;
+  topScrollRef: RefObject<HTMLElement | null>;
 }) => {
   return (
-    <section className="flex border-yellow-300 flex-col gap-32 grow items-center">
-      <article className="pt-[6rem]">
+    <section className="flex border-yellow-300 flex-col grow items-center">
+      <article className="pt-[6rem]" ref={topScrollRef}>
         <ul>
           {[
             "게임 기획 직무의 이해",
@@ -263,7 +261,7 @@ const Right_section = ({
           })}
         </ul>
       </article>
-      <article className="pt-[11rem]" ref={bottomScrollRef}>
+      <article className="pt-[11rem] pb-[2.5rem]" ref={bottomScrollRef}>
         <ul>
           {[
             "XR 게임 개발자의 이해",
@@ -298,7 +296,7 @@ const Right_section = ({
 
 const Li_item = ({ idx, children }: { idx: number; children: string }) => {
   return (
-    <li className="px-4 pb-10 text-white">
+    <li className="px-4 text-white pb-12 last:pb-0">
       <strong className="inline-flex items-center justify-center border border-white p-2 rounded-full h-6 w-6">
         {idx}
       </strong>

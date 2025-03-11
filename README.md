@@ -108,3 +108,10 @@ physics: 애니메이션 효과
 ## swiper
 
 https://swiperjs.com/react#useswiper
+
+## 간단한 이벤트 설명
+
+e.currentTarget은 이벤트를 트리거한 요소,
+e.target은 이벤트가 발생한 요소를 가리킨다.
+
+https://www.linkedin.com/pulse/lightning-web-components-exploring-contrast-between-gaurav-gupta
