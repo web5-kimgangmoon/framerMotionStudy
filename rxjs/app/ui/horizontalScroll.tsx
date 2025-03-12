@@ -212,7 +212,7 @@ const Slider = ({ slider }: { slider: RefObject<null | SwiperRef> }) => {
 const Left_section_scrollBottom = ({ isTopView }: { isTopView: boolean }) => {
   return (
     <section hidden={isTopView}>
-      <ul className="py-8 flex gap-3 justify-center font-bold">
+      <ul className="py-8 flex gap-3 justify-center font-bold text-nowrap">
         {[
           ["Slime Rancher", "#"],
           ["니어오토마타", "#"],

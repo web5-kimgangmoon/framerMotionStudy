@@ -115,3 +115,5 @@ e.currentTarget은 이벤트를 트리거한 요소,
 e.target은 이벤트가 발생한 요소를 가리킨다.
 
 https://www.linkedin.com/pulse/lightning-web-components-exploring-contrast-between-gaurav-gupta
+
+## 위에서 아래로 스크롤할 경우만 애니메이션
