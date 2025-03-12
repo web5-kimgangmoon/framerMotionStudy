@@ -6,11 +6,36 @@
 
 html 구조에서 시각적인 구조와 분류적인 구조가 다를 경우, 분류적인 구조를 따르는 편이 좋다.
 
+### position css
+
+relative는 단순히 기준점으로 삼기 위함이 아니라, 퍼센테이지 단위 등 부모의 요소가 필요한 경우 absolute나 sticky에서 해당 속성을 지닌 부모요소를 기준으로 삼게 된다. 즉, relative 속성을 지닌 요소가 absolute나 sticky에 존재하지 않는다면 외부의 요소를 참조할 부모요소로 삼게 되므로 주의해야 한다.
+
+### 반응형 고려
+
+유사 내부 스크롤을 구현하고자 했을때, 높이가 낮은 요소를 움직이도록 만드는 편이 좋다. 길이가 긴 요소를 움직이고자 하면, 화면 크기에 따라 줄이거나 늘려야해 그 작은 결정 하나로 메모리가 쓸데없이 더 필요해진다.
+
+### 방향성 틀림
+
+가로스크롤을 활용할 필요가 없었다. sticky 포지션을 잘 이용했으면 됐는데 잘못된 방향으로 공부했다.
+
 ## 가로스크롤
 
 - _주석_: 가로스크롤 관련 내용이 길어졌습니다. 따로 분류합니다.
 
 - 링크: https://codesandbox.io/p/sandbox/framer-motion-horizontal-scroll-by-scrolling-vertically-5crke?file=%2Fsrc%2FSmoothScroll.js%3A8%2C23
+
+### useScroll
+
+- 기본은 전체 스크롤을 기준.
+- 옵션으로 **target**, **container**, **axis**, **offset**이 존재한다.
+
+- **target**: 스크롤의 진행상황과 스크롤한 길이가 저장되는 객체를 생성하기 위한 기준점이다. 지정하면 전체 스크롤이 아닌 해당 요소를 기준으로 스크롤과 관련된 값들을 계산한다.
+
+- **container**: 스크롤이 존재하는 위치, 기본은 브라우저지만 내부요소를 지정할 수 있다.(공식문서 확실친 않음)
+
+- **axis**: 기준으로 하는 축, 기본은 **"y"**지만, 가로스크롤을 원한다면 **"x"**로 바꿔주면 된다.
+
+- **offset**: 스크롤의 기준점, 첫번째는 시작지점, 두번째는 끝지점이다. 기본은 **["start start", "end end"]**, 다양하게 텍스트로 표현하지만 기본적으로 0~1까지의 값을 받고 퍼센테이지로 작동한다.
 
 ### will-change
 
@@ -79,3 +104,14 @@ physics: 애니메이션 효과
 
 - **transform**: 부드러운 애니메이션을 위해 동적으로 변하는 motionValue 객체를 제공해주는 framer-motion의 훅.(컨테이너의 border의 길이는 scrollWidth에 포함되어 있지 않으므로 직접 추가해주자.)
 - **physics**: 애니메이션을 위한 객체, 지나친 관성을 지닌 애니메이션은 보여주고 싶은 컨텐츠의 요소를 벗어나게 만든다.
+
+## swiper
+
+https://swiperjs.com/react#useswiper
+
+## 간단한 이벤트 설명
+
+e.currentTarget은 이벤트를 트리거한 요소,
+e.target은 이벤트가 발생한 요소를 가리킨다.
+
+https://www.linkedin.com/pulse/lightning-web-components-exploring-contrast-between-gaurav-gupta

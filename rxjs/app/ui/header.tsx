@@ -78,7 +78,7 @@ const Header = () => {
   });
   return (
     <motion.header
-      className="block fixed top-0 left-0 w-full bg-white z-10"
+      className="block fixed top-0 left-0 w-full bg-white z-20"
       animate={{ translateY: isScrollDown ? "-100%" : "0%" }}
       transition={{ damping: undefined }}
     >

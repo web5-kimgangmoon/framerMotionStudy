@@ -5,10 +5,10 @@ import SmoothScroll from "./ui/horizontalScroll";
 
 export default function Home() {
   return (
-    <div>
+    <div className="relative">
       <Header />
       <div className="pt-48 bg-red-400"></div>
-
+      <div className="sticky top-0 left-0 bg-rose-600 w-full h-[5rem] z-10"></div>
       <SmoothScroll />
 
       <div className="w-full h-[40rem] bg-red-500"></div>
