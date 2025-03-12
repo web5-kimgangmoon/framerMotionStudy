@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import calcBoundaryMove from "../(lib)/calcBoundaryMove";
+import Link from "next/link";
 
 const SmoothScroll = () => {
   const containerRef = useRef<null | HTMLDivElement>(null);
@@ -26,7 +27,7 @@ const SmoothScroll = () => {
     >
       <div
         className={clsx(
-          " transition-colors flex justify-between relative",
+          "transition-colors flex relative",
           isTopView ? "bg-purple-900" : "bg-indigo-900"
         )}
         ref={containerRef}
@@ -62,7 +63,7 @@ const Left_section = ({
   return (
     <section
       className={clsx(
-        "sticky top-[5rem] left-0 transition-colors h-max",
+        "sticky top-[5rem] left-0 transition-colors h-max w-[50%]",
         isTopView ? "bg-purple-900" : "bg-indigo-900"
       )}
     >
@@ -111,7 +112,7 @@ const Left_section = ({
             <br />
             모든 준비가 되어있습니다.
           </h1>
-          <h2 className="font-bold text-2xl pb-10">
+          <h2 className="font-bold text-2xl pb-3">
             {isTopView
               ? "게임 기획자는 뭘 배우나요?"
               : "게임 프로그래밍은 뭘 배우나요?"}
@@ -130,6 +131,7 @@ const Left_section_scrollTop = ({ isTopView }: { isTopView: boolean }) => {
   return (
     <section hidden={!isTopView}>
       <div
+        className="py-8 flex gap-3 justify-center font-bold"
         onClick={(e) => {
           e.currentTarget.childNodes.forEach((v, idx) => {
             if (v === e.target) {
@@ -157,7 +159,7 @@ const Left_section_scrollTop = ({ isTopView }: { isTopView: boolean }) => {
           "오딘",
         ].map((v, idx) => (
           <button
-            className={clsx(`p-3 bg-blue-300`, {
+            className={clsx({
               "opacity-50": slideIdx !== idx,
             })}
             key={idx}
@@ -174,10 +176,10 @@ const Left_section_scrollTop = ({ isTopView }: { isTopView: boolean }) => {
 const Slider = ({ slider }: { slider: RefObject<null | SwiperRef> }) => {
   return (
     <Swiper
+      className="rounded-xl"
       style={{ width: 486, height: 250 }}
       spaceBetween={0}
       slidesPerView={1}
-      // loop={true}
       ref={slider}
       initialSlide={6}
       onSlideChangeTransitionEnd={(swiper) => {
@@ -210,6 +212,20 @@ const Slider = ({ slider }: { slider: RefObject<null | SwiperRef> }) => {
 const Left_section_scrollBottom = ({ isTopView }: { isTopView: boolean }) => {
   return (
     <section hidden={isTopView}>
+      <ul className="py-8 flex gap-3 justify-center font-bold">
+        {[
+          ["Slime Rancher", "#"],
+          ["니어오토마타", "#"],
+          ["마리오카트", "#"],
+          ["산나비", "#"],
+          ["쿠키런킹덤", "#"],
+          ["핵앤슬러쉬", "#"],
+        ].map((v, idx) => (
+          <li key={idx}>
+            <Link href={v[1]}>{v[0]}</Link>
+          </li>
+        ))}
+      </ul>
       <iframe
         width="486"
         height="250"
@@ -229,7 +245,7 @@ const Right_section = ({
   topScrollRef: RefObject<HTMLElement | null>;
 }) => {
   return (
-    <section className="flex border-yellow-300 flex-col grow items-center">
+    <section className="flex border-yellow-300 flex-col grow items-center w-[50%]">
       <article className="pt-[6rem]" ref={topScrollRef}>
         <ul>
           {[
