@@ -1,42 +1,146 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ToggleBox_list } from "./toggleBox";
 import { motion } from "motion/react";
+import { mkOnViewportEnter, mkOnViewportLeave } from "../(lib)/viewPortControl";
+import { upAnime_animate, upAnime_initial } from "../(lib)/upAnime";
 
 export const TestComp = () => {
-  const ref = useRef<null | HTMLDivElement>(null);
-  const [isRunAnime, setIsRunAnime] = useState(false);
+  const [runAnimeIdx, setRunAnimeIdx] = useState(-1);
   return (
-    <motion.div
+    <div
+      className="w-full min-h-[40rem] pt-24 pb-12"
+      style={{
+        backgroundColor: "#010101",
+        backgroundPosition: "center 0",
+        backgroundRepeat: "no-repeat",
+        backgroundImage: "url('./block_sect09_bg.jpg')",
+        backgroundSize: "cover",
+      }}
+    >
+      <div className="container flex items-center flex-col">
+        <Title_section
+          title_isRunAnime={runAnimeIdx > -1}
+          title_setIsRunAnime={(toggle) => {
+            setRunAnimeIdx(toggle ? 0 : -1);
+          }}
+          content_isRunAnime={runAnimeIdx > 0}
+          content_setIsRunAnime={(toggle) => {
+            setRunAnimeIdx(toggle ? 1 : 0);
+          }}
+        />
+        <ToggleBox_section
+          isRunAnime={runAnimeIdx > 1}
+          setIsRunAnime={(toggle) => {
+            setRunAnimeIdx(toggle ? 2 : 1);
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const Title_section = ({
+  title_isRunAnime,
+  title_setIsRunAnime,
+  content_isRunAnime,
+  content_setIsRunAnime,
+}: {
+  title_isRunAnime: boolean;
+  title_setIsRunAnime: (toggle: boolean) => void;
+  content_isRunAnime: boolean;
+  content_setIsRunAnime: (toggle: boolean) => void;
+}) => {
+  const titleRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const title_onViewportEnter = useCallback(
+    mkOnViewportEnter(titleRef, title_setIsRunAnime),
+    [titleRef]
+  );
+  const title_onViewportLeave = useCallback(
+    mkOnViewportLeave(titleRef, title_setIsRunAnime),
+    [titleRef]
+  );
+
+  const content_onViewportEnter = useCallback(
+    mkOnViewportEnter(contentRef, content_setIsRunAnime),
+    [contentRef]
+  );
+  const content_onViewportLeave = useCallback(
+    mkOnViewportLeave(contentRef, content_setIsRunAnime),
+    [contentRef]
+  );
+
+  return (
+    <section className="text-white font-bold text-center pb-48">
+      <motion.div
+        initial={upAnime_initial}
+        animate={upAnime_animate(title_isRunAnime)}
+        onViewportEnter={title_onViewportEnter}
+        onViewportLeave={() => title_onViewportLeave(title_isRunAnime)}
+        ref={titleRef}
+      >
+        <h1 className="text-3xl">우리는 결과로 말합니다.</h1>
+        <h5 className="text-gray-500 text-sm pb-12 pt-4">순수 게임직종 취업</h5>
+      </motion.div>
+      <motion.div
+        initial={upAnime_initial}
+        animate={upAnime_animate(content_isRunAnime)}
+        onViewportEnter={content_onViewportEnter}
+        onViewportLeave={() => content_onViewportLeave(content_isRunAnime)}
+        ref={contentRef}
+      >
+        <div className="leading-10 flex gap-12">
+          {[
+            ["비전공자", "80", "2022년 재학생 통계"],
+            ["수료율", "91", "(2022년 합산)"],
+            ["취업률", "88", "HRD.Net 응용SW엔지니어링", "(2023년 합산)"],
+          ].map((v, idx) => (
+            <div key={idx} className="grow w-48">
+              <span className="text-purple-600">
+                {v[0]}
+                <br />
+              </span>
+              <span className="text-5xl">
+                {v[1]}
+                <span className="text-2xl">%</span>
+                <br />
+              </span>
+              <p className="font-thin text-sm">
+                {v[2]}
+                {v[3] && <br />}
+                {v[3] && v[3]}
+              </p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </section>
+  );
+};
+
+const ToggleBox_section = ({
+  isRunAnime,
+  setIsRunAnime,
+}: {
+  isRunAnime: boolean;
+  setIsRunAnime: (toggle: boolean) => void;
+}) => {
+  const ref = useRef<null | HTMLElement>(null);
+
+  const onViewportEnter = useCallback(mkOnViewportEnter(ref, setIsRunAnime), [
+    ref,
+  ]);
+  const onViewportLeave = useCallback(mkOnViewportLeave(ref, setIsRunAnime), [
+    ref,
+  ]);
+  return (
+    <motion.section
       className="w-[30rem] relative"
-      initial={{ transform: "translate3d(0px, 30px, 0px)", opacity: 0 }}
-      animate={{
-        transform: isRunAnime
-          ? "translate3d(0px, 0px, 0px)"
-          : "translate3d(0px, 30px, 0px)",
-        opacity: isRunAnime ? 1 : 0,
-      }}
-      onViewportEnter={() => {
-        const boundary = window.scrollY + window.innerHeight + 30;
-        if (
-          boundary > ref.current!.offsetTop &&
-          window.scrollY < ref.current!.offsetTop + ref.current!.scrollHeight
-        )
-          setIsRunAnime(true);
-        else setIsRunAnime(false);
-      }}
-      onViewportLeave={() => {
-        const boundary = window.scrollY;
-        if (
-          boundary > ref.current!.offsetTop + ref.current!.scrollHeight &&
-          !isRunAnime
-        )
-          setIsRunAnime(true);
-        if (
-          boundary < ref.current!.offsetTop + ref.current!.scrollHeight &&
-          isRunAnime
-        )
-          setIsRunAnime(false);
-      }}
+      initial={upAnime_initial}
+      animate={upAnime_animate(isRunAnime)}
+      onViewportEnter={onViewportEnter}
+      onViewportLeave={() => onViewportLeave(isRunAnime)}
       ref={ref}
     >
       <ToggleBox_list
@@ -79,6 +183,6 @@ export const TestComp = () => {
           },
         ]}
       />
-    </motion.div>
+    </motion.section>
   );
 };
