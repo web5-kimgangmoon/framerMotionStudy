@@ -168,12 +168,18 @@ const Left_section_scrollTop = ({ isTopView }: { isTopView: boolean }) => {
           </button>
         ))}
       </div>
-      <Slider slider={slider} />
+      <Slider slider={slider} setState={setSlideIDx} />
     </section>
   );
 };
 
-const Slider = ({ slider }: { slider: RefObject<null | SwiperRef> }) => {
+const Slider = ({
+  slider,
+  setState,
+}: {
+  slider: RefObject<null | SwiperRef>;
+  setState: (num: number) => void;
+}) => {
   return (
     <Swiper
       className="rounded-xl"
@@ -185,6 +191,21 @@ const Slider = ({ slider }: { slider: RefObject<null | SwiperRef> }) => {
       onSlideChangeTransitionEnd={(swiper) => {
         if (swiper.activeIndex < 6) swiper.slideTo(swiper.activeIndex + 6, 0);
         if (swiper.activeIndex > 11) swiper.slideTo(swiper.activeIndex - 6, 0);
+        setState(swiper.activeIndex - 6);
+      }}
+      onSlideNextTransitionStart={(swiper) => {
+        if (swiper.activeIndex === swiper.slides.length - 1) {
+          swiper.allowSlideNext = false;
+          swiper.slideTo(swiper.activeIndex - 6, 0);
+          swiper.allowSlideNext = true;
+        }
+      }}
+      onSlidePrevTransitionStart={(swiper) => {
+        if (swiper.activeIndex === 0) {
+          swiper.allowSlidePrev = false;
+          swiper.slideTo(swiper.activeIndex + 6, 0);
+          swiper.allowSlidePrev = true;
+        }
       }}
     >
       <SwiperSlide className="bg-red-900">slide1</SwiperSlide>
@@ -212,7 +233,7 @@ const Slider = ({ slider }: { slider: RefObject<null | SwiperRef> }) => {
 const Left_section_scrollBottom = ({ isTopView }: { isTopView: boolean }) => {
   return (
     <section hidden={isTopView}>
-      <ul className="py-8 flex gap-3 justify-center font-bold">
+      <ul className="py-8 flex gap-3 justify-center font-bold text-nowrap">
         {[
           ["Slime Rancher", "#"],
           ["니어오토마타", "#"],
@@ -312,7 +333,7 @@ const Right_section = ({
 
 const Li_item = ({ idx, children }: { idx: number; children: string }) => {
   return (
-    <li className="px-4 text-white pb-12 last:pb-0">
+    <li className="px-4 text-white pb-10 last:pb-0">
       <strong className="inline-flex items-center justify-center border border-white p-2 rounded-full h-6 w-6">
         {idx}
       </strong>

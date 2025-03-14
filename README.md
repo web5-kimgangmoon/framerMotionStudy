@@ -115,3 +115,11 @@ e.currentTarget은 이벤트를 트리거한 요소,
 e.target은 이벤트가 발생한 요소를 가리킨다.
 
 https://www.linkedin.com/pulse/lightning-web-components-exploring-contrast-between-gaurav-gupta
+
+## 위에서 아래로 스크롤할 경우만 애니메이션
+
+만약 motion-framer를 활용해 화면에 들어올떄만 애니메이션을 넣고 나올 때는 빼고 싶으면, useInView 활용. 세부적인 조건을 붙이고 싶다면 onViewportEnter과 onViewportLeave로 각각 들어올 때의 조건과 나갈 때의 조건을 붙여주고 애니메이션 동작을 위한 boolean을 true로 바꾸고 false로 바꿔주게 만들어주자.
+
+- **onViewportEnter**: 화면에 들어올 경우, 동작을 위한 조건, 조건 충족시 true.
+
+- **onViewportLeave**: 화면에서 나갈 경우, 애니메이션 전으로 되돌리기 위한 조건, 조건 충족시 false.
