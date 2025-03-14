@@ -133,21 +133,21 @@ const Left_section_scrollTop = ({ isTopView }: { isTopView: boolean }) => {
       <div
         className="py-8 flex gap-3 justify-center font-bold"
         onClick={(e) => {
-          e.currentTarget.childNodes.forEach((v, idx) => {
-            if (v === e.target) {
-              {
-                const slideLength = slider.current!.swiper.slides.length / 3;
-                const next = calcBoundaryMove(
-                  slider.current!.swiper.activeIndex,
-                  idx + slideLength,
-                  slideLength,
-                  slideLength * 2 - 1
-                );
-                slider.current!.swiper.slideTo(next[0], next[1] * 300);
-                setSlideIDx(idx);
-              }
-            }
-          });
+          // e.currentTarget.childNodes.forEach((v, idx) => {
+          //   if (v === e.target) {
+          //     {
+          //       const slideLength = slider.current!.swiper.slides.length / 3;
+          //       const next = calcBoundaryMove(
+          //         slider.current!.swiper.activeIndex,
+          //         idx + slideLength,
+          //         slideLength,
+          //         slideLength * 2 - 1
+          //       );
+          //       slider.current!.swiper.slideTo(next[0], next[1] * 300);
+          //       setSlideIDx(idx);
+          //     }
+          //   }
+          // });
         }}
       >
         {[
@@ -188,25 +188,25 @@ const Slider = ({
       slidesPerView={1}
       ref={slider}
       initialSlide={6}
-      onSlideChangeTransitionEnd={(swiper) => {
-        if (swiper.activeIndex < 6) swiper.slideTo(swiper.activeIndex + 6, 0);
-        if (swiper.activeIndex > 11) swiper.slideTo(swiper.activeIndex - 6, 0);
-        setState(swiper.activeIndex - 6);
-      }}
-      onSlideNextTransitionStart={(swiper) => {
-        if (swiper.activeIndex === swiper.slides.length - 1) {
-          swiper.allowSlideNext = false;
-          swiper.slideTo(swiper.activeIndex - 6, 0);
-          swiper.allowSlideNext = true;
-        }
-      }}
-      onSlidePrevTransitionStart={(swiper) => {
-        if (swiper.activeIndex === 0) {
-          swiper.allowSlidePrev = false;
-          swiper.slideTo(swiper.activeIndex + 6, 0);
-          swiper.allowSlidePrev = true;
-        }
-      }}
+      // onSlideChangeTransitionEnd={(swiper) => {
+      //   if (swiper.activeIndex < 6) swiper.slideTo(swiper.activeIndex + 6, 0);
+      //   if (swiper.activeIndex > 11) swiper.slideTo(swiper.activeIndex - 6, 0);
+      //   setState(swiper.activeIndex - 6);
+      // }}
+      // onSlideNextTransitionStart={(swiper) => {
+      //   if (swiper.activeIndex === swiper.slides.length - 1) {
+      //     swiper.allowSlideNext = false;
+      //     swiper.slideTo(swiper.activeIndex - 6, 0);
+      //     swiper.allowSlideNext = true;
+      //   }
+      // }}
+      // onSlidePrevTransitionStart={(swiper) => {
+      //   if (swiper.activeIndex === 0) {
+      //     swiper.allowSlidePrev = false;
+      //     swiper.slideTo(swiper.activeIndex + 6, 0);
+      //     swiper.allowSlidePrev = true;
+      //   }
+      // }}
     >
       <SwiperSlide className="bg-red-900">slide1</SwiperSlide>
       <SwiperSlide className="bg-red-800">slide2</SwiperSlide>
