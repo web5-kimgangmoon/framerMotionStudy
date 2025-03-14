@@ -11,7 +11,7 @@ export const ToggleBox_list = ({
   list: { title: string; subTitle?: string; content: string }[];
   openIdx?: number;
 }) => {
-  const [onIdx, setOnIdx] = useState(openIdx ? openIdx : -1);
+  const [onIdx, setOnIdx] = useState(Number.isNaN(openIdx) ? -1 : openIdx);
   const selectIdx = useCallback(
     (idx: number) => {
       if (onIdx === idx) setOnIdx(-1);
