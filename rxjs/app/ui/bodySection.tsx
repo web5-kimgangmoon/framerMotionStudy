@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useId, useLayoutEffect, useState } from "react";
 import { ToggleBox_list } from "./toggleBox";
 import AnimeWrapper_div from "./animeWrapper_div";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
 export const TestComp = () => {
-  const [runAnimeIdx, setRunAnimeIdx] = useState(-1);
-
   return (
     <div
       className="w-full min-h-[40rem] pt-24 pb-12"
@@ -17,26 +19,8 @@ export const TestComp = () => {
       }}
     >
       <div className="container flex items-center flex-col">
-        <Title_section
-        // title_isRunAnime={runAnimeIdx > -1}
-        // title_setIsRunAnime={(toggle) => {
-        //   setRunAnimeIdx(toggle ? 0 : -1);
-        // }}
-        // content_isRunAnime={runAnimeIdx > 0}
-        // content_setIsRunAnime={(toggle) => {
-        //   setRunAnimeIdx(toggle ? 1 : 0);
-        // }}
-        />
-        <ToggleBox_section
-        // title_isRunAnime={runAnimeIdx > 1}
-        // title_setIsRunAnime={(toggle) => {
-        //   setRunAnimeIdx(toggle ? 2 : 1);
-        // }}
-        // isRunAnime={runAnimeIdx > 2}
-        // setIsRunAnime={(toggle) => {
-        //   setRunAnimeIdx(toggle ? 3 : 2);
-        // }}
-        />
+        <Title_section />
+        <ToggleBox_section />
       </div>
     </div>
   );
@@ -192,5 +176,82 @@ const ToggleBox_section = () => {
         </div>
       </AnimeWrapper_div>
     </section>
+  );
+};
+
+export const BodyComp_slide = () => {
+  const titleId = useId();
+  return (
+    <div
+      className="flex justify-center py-20"
+      style={{
+        backgroundImage: "url(/block_sect04-bg.jpg)",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <section className="container text-white font-bold w-[60rem]">
+        <Swiper
+          modules={[Navigation]}
+          style={{
+            display: "flex",
+            flexDirection: "column-reverse",
+            width: "100%",
+            overflow: "visible",
+          }}
+          slidesPerView={3}
+          // slidesPerGroup={3}
+          spaceBetween={30}
+          navigation={{
+            disabledClass: "disabled-button",
+          }}
+          wrapperClass="!h-[20rem]"
+          onSwiper={(swiper) => {
+            const target = document.getElementById(titleId);
+            if (target) {
+              target.append(swiper.navigation.nextEl, swiper.navigation.prevEl);
+            }
+            swiper.navigation.nextEl.classList =
+              "after:content-['next'] pl-[1.1rem] pr-[0.9rem] flex items-center h-[2.5rem] cursor-pointer absolute top-[calc(50%-1.25rem)] right-0 border border-white rounded-full text-sm";
+            swiper.navigation.nextEl.style.fontFamily = "swiper-icons";
+
+            swiper.navigation.prevEl.classList =
+              "after:content-['prev'] pl-[0.9rem] pr-[1.1rem] flex items-center h-[2.5rem] cursor-pointer absolute top-[calc(50%-1.25rem)] right-12 border border-white rounded-full text-sm";
+            swiper.navigation.prevEl.style.fontFamily = "swiper-icons";
+            if (swiper.activeIndex === 0) {
+              swiper.navigation.prevEl.classList.add("disabled-button");
+            }
+            if (swiper.activeIndex === swiper.slides.length - 1) {
+              swiper.navigation.nextEl.classList.add("disabled-button");
+            }
+          }}
+        >
+          <div className="py-12">
+            <h1 className="text-4xl leading-[3rem] relative" id={titleId}>
+              2,500명의 <span className="text-purple-500">게임 개발자</span>
+              <br />
+              우리 경일의 졸업생입니다.
+            </h1>
+          </div>
+          {[
+            "test1",
+            "test2",
+            "test3",
+            "test4",
+            "test5",
+            "test6",
+            "test7",
+            "test8",
+          ].map((v, idx) => (
+            <SwiperSlide className="bg-blue-300" key={idx}>
+              {v}
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <h2 className="block text-center">
+          “이제 여러분의 미래를 바꿀 차례입니다”
+        </h2>
+        <h3 className="blcok text-center">졸업생 이야기 보러가기</h3>
+      </section>
+    </div>
   );
 };

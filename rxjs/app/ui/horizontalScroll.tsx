@@ -1,7 +1,7 @@
 import React, { RefObject, useRef } from "react";
 import { useInView } from "framer-motion";
 import clsx from "clsx";
-import { Swiper, SwiperRef, SwiperSlide, useSwiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import Link from "next/link";
