@@ -1,10 +1,11 @@
-import React, { RefObject, useRef, useState } from "react";
+import React, { RefObject, useRef } from "react";
 import { useInView } from "framer-motion";
 import clsx from "clsx";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperRef, SwiperSlide, useSwiper } from "swiper/react";
 import "swiper/css";
-import calcBoundaryMove from "../(lib)/calcBoundaryMove";
+import "swiper/css/pagination";
 import Link from "next/link";
+import { Pagination } from "swiper/modules";
 
 const SmoothScroll = () => {
   const containerRef = useRef<null | HTMLDivElement>(null);
@@ -126,106 +127,54 @@ const Left_section = ({
 };
 
 const Left_section_scrollTop = ({ isTopView }: { isTopView: boolean }) => {
-  const slider = useRef<null | SwiperRef>(null);
-  const [slideIdx, setSlideIDx] = useState(0);
   return (
     <section hidden={!isTopView}>
-      <div
-        className="py-8 flex gap-3 justify-center font-bold"
-        onClick={(e) => {
-          // e.currentTarget.childNodes.forEach((v, idx) => {
-          //   if (v === e.target) {
-          //     {
-          //       const slideLength = slider.current!.swiper.slides.length / 3;
-          //       const next = calcBoundaryMove(
-          //         slider.current!.swiper.activeIndex,
-          //         idx + slideLength,
-          //         slideLength,
-          //         slideLength * 2 - 1
-          //       );
-          //       slider.current!.swiper.slideTo(next[0], next[1] * 300);
-          //       setSlideIDx(idx);
-          //     }
-          //   }
-          // });
-        }}
-      >
-        {[
-          "RPG",
-          "슈퍼마리오",
-          "세븐나이츠2",
-          "용과같이8",
-          "다크소울3",
-          "오딘",
-        ].map((v, idx) => (
-          <button
-            className={clsx({
-              "opacity-50": slideIdx !== idx,
-            })}
-            key={idx}
-          >
-            {v}
-          </button>
-        ))}
-      </div>
-      <Slider slider={slider} setState={setSlideIDx} />
+      <Slider />
     </section>
   );
 };
 
-const Slider = ({
-  slider,
-  setState,
-}: {
-  slider: RefObject<null | SwiperRef>;
-  setState: (num: number) => void;
-}) => {
+const Slider = () => {
+  const pages = [
+    "RPG",
+    "슈퍼마리오",
+    "세븐나이츠2",
+    "용과같이8",
+    "다크소울3",
+    "오딘",
+  ];
+
   return (
     <Swiper
-      className="rounded-xl"
-      style={{ width: 486, height: 250 }}
+      style={{
+        width: 486,
+        display: "flex",
+        flexDirection: "column-reverse",
+      }}
+      wrapperClass="!h-[250px] !ease-in-out"
       spaceBetween={0}
       slidesPerView={1}
-      ref={slider}
-      initialSlide={6}
-      // onSlideChangeTransitionEnd={(swiper) => {
-      //   if (swiper.activeIndex < 6) swiper.slideTo(swiper.activeIndex + 6, 0);
-      //   if (swiper.activeIndex > 11) swiper.slideTo(swiper.activeIndex - 6, 0);
-      //   setState(swiper.activeIndex - 6);
-      // }}
-      // onSlideNextTransitionStart={(swiper) => {
-      //   if (swiper.activeIndex === swiper.slides.length - 1) {
-      //     swiper.allowSlideNext = false;
-      //     swiper.slideTo(swiper.activeIndex - 6, 0);
-      //     swiper.allowSlideNext = true;
-      //   }
-      // }}
-      // onSlidePrevTransitionStart={(swiper) => {
-      //   if (swiper.activeIndex === 0) {
-      //     swiper.allowSlidePrev = false;
-      //     swiper.slideTo(swiper.activeIndex + 6, 0);
-      //     swiper.allowSlidePrev = true;
-      //   }
-      // }}
+      loop
+      initialSlide={0}
+      modules={[Pagination]}
+      pagination={{
+        clickable: true,
+        bulletClass: "opacity-60",
+        bulletActiveClass: "!opacity-100",
+        renderBullet: (index, className) => {
+          return `<div class="${className} cursor-pointer">${pages[index]}</div>`;
+        },
+        type: "bullets",
+        horizontalClass: "pageWrapper",
+      }}
+      speed={1000}
     >
-      <SwiperSlide className="bg-red-900">slide1</SwiperSlide>
-      <SwiperSlide className="bg-red-800">slide2</SwiperSlide>
-      <SwiperSlide className="bg-red-700">slide3</SwiperSlide>
-      <SwiperSlide className="bg-red-600">slide4</SwiperSlide>
-      <SwiperSlide className="bg-red-500">slide5</SwiperSlide>
-      <SwiperSlide className="bg-red-400">slide6</SwiperSlide>
-      <SwiperSlide className="bg-red-900">slide1</SwiperSlide>
-      <SwiperSlide className="bg-red-800">slide2</SwiperSlide>
-      <SwiperSlide className="bg-red-700">slide3</SwiperSlide>
-      <SwiperSlide className="bg-red-600">slide4</SwiperSlide>
-      <SwiperSlide className="bg-red-500">slide5</SwiperSlide>
-      <SwiperSlide className="bg-red-400">slide6</SwiperSlide>
-      <SwiperSlide className="bg-red-900">slide1</SwiperSlide>
-      <SwiperSlide className="bg-red-800">slide2</SwiperSlide>
-      <SwiperSlide className="bg-red-700">slide3</SwiperSlide>
-      <SwiperSlide className="bg-red-600">slide4</SwiperSlide>
-      <SwiperSlide className="bg-red-500">slide5</SwiperSlide>
-      <SwiperSlide className="bg-red-400">slide6</SwiperSlide>
+      <SwiperSlide className="bg-red-900 rounded-xl p-1">slide1</SwiperSlide>
+      <SwiperSlide className="bg-red-800 rounded-xl p-1">slide2</SwiperSlide>
+      <SwiperSlide className="bg-red-700 rounded-xl p-1">slide3</SwiperSlide>
+      <SwiperSlide className="bg-red-600 rounded-xl p-1">slide4</SwiperSlide>
+      <SwiperSlide className="bg-red-500 rounded-xl p-1">slide5</SwiperSlide>
+      <SwiperSlide className="bg-red-400 rounded-xl p-1">slide6</SwiperSlide>
     </Swiper>
   );
 };
