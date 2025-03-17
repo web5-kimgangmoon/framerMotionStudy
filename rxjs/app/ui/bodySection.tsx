@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import clsx from "clsx";
 
 export const TestComp = () => {
   return (
@@ -190,6 +191,15 @@ export const BodyComp_slide = () => {
       }}
     >
       <section className="container text-white font-bold w-[60rem]">
+        <div className="py-12 h-48 relative" id={titleId}>
+          <AnimeWrapper_div className="h-full" isTarget_parent>
+            <h1 className="text-4xl leading-[3rem]">
+              2,500명의 <span className="text-purple-500">게임 개발자</span>
+              <br />
+              우리 경일의 졸업생입니다.
+            </h1>
+          </AnimeWrapper_div>
+        </div>
         <Swiper
           modules={[Navigation]}
           style={{
@@ -211,11 +221,11 @@ export const BodyComp_slide = () => {
               target.append(swiper.navigation.nextEl, swiper.navigation.prevEl);
             }
             swiper.navigation.nextEl.classList =
-              "after:content-['next'] pl-[1.1rem] pr-[0.9rem] flex items-center h-[2.5rem] cursor-pointer absolute top-[calc(50%-1.25rem)] right-0 border border-white rounded-full text-sm";
+              "after:content-['next'] pl-[1.1rem] pr-[0.9rem] flex items-center h-[2.5rem] cursor-pointer absolute top-[4.75rem] right-0 border border-white rounded-full text-sm";
             swiper.navigation.nextEl.style.fontFamily = "swiper-icons";
 
             swiper.navigation.prevEl.classList =
-              "after:content-['prev'] pl-[0.9rem] pr-[1.1rem] flex items-center h-[2.5rem] cursor-pointer absolute top-[calc(50%-1.25rem)] right-12 border border-white rounded-full text-sm";
+              "after:content-['prev'] pl-[0.9rem] pr-[1.1rem] flex items-center h-[2.5rem] cursor-pointer absolute top-[4.75rem] right-12 border border-white rounded-full text-sm";
             swiper.navigation.prevEl.style.fontFamily = "swiper-icons";
             if (swiper.activeIndex === 0) {
               swiper.navigation.prevEl.classList.add("disabled-button");
@@ -225,32 +235,37 @@ export const BodyComp_slide = () => {
             }
           }}
         >
-          <div className="py-12">
-            <h1 className="text-4xl leading-[3rem] relative" id={titleId}>
-              2,500명의 <span className="text-purple-500">게임 개발자</span>
-              <br />
-              우리 경일의 졸업생입니다.
-            </h1>
-          </div>
           {[
-            "test1",
-            "test2",
-            "test3",
-            "test4",
-            "test5",
-            "test6",
-            "test7",
-            "test8",
+            ["인생에서 가장", "후회하지 않는 선택", "익명", "회사명"],
+            ["test2", "테스트2", "익명", "회사명"],
+            ["test3", "테스트3", "익명", "회사명"],
+            ["test4", "테스트4", "익명", "회사명"],
+            ["test5", "테스트5", "익명", "회사명"],
+            ["test6", "테스트6", "익명", "회사명"],
+            ["test7", "테스트7", "익명", "회사명"],
+            ["test8", "테스트8", "익명", "회사명"],
           ].map((v, idx) => (
             <SwiperSlide className="bg-blue-300" key={idx}>
-              {v}
+              <div className="w-full h-full flex flex-col items-center justify-center text-center gap-5">
+                <div className="text-[1.4rem] font-semibold">
+                  {v[0]}
+                  <br />
+                  {v[1]}
+                </div>
+                <div className={"text-sm"}>
+                  {v[2]}
+                  <span className="before:inline-block before:content-[''] before:border-l before:border-white before:py-[0.3rem] before:pr-1 pl-1">
+                    {v[3]}
+                  </span>
+                </div>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
-        <h2 className="block text-center">
-          “이제 여러분의 미래를 바꿀 차례입니다”
-        </h2>
-        <h3 className="blcok text-center">졸업생 이야기 보러가기</h3>
+        <AnimeWrapper_div className="text-center">
+          <h2 className="block">“이제 여러분의 미래를 바꿀 차례입니다”</h2>
+          <h3 className="blcok">졸업생 이야기 보러가기</h3>
+        </AnimeWrapper_div>
       </section>
     </div>
   );
