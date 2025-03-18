@@ -32,5 +32,14 @@ export default {
         },
       })
     ),
+    plugin(({ addComponents }) =>
+      addComponents({
+        ".disabled-button": {
+          opacity: ".35",
+          cursor: "auto",
+          "pointer-events": "none",
+        },
+      })
+    ),
   ],
 } satisfies Config;

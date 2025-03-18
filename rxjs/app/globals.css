@@ -9,6 +9,7 @@ html {
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  overflow-x: hidden;
 }
 
 @media (prefers-color-scheme: dark) {

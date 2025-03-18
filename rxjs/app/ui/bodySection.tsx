@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useId, useLayoutEffect, useState } from "react";
 import { ToggleBox_list } from "./toggleBox";
 import AnimeWrapper_div from "./animeWrapper_div";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import clsx from "clsx";
+import Link from "next/link";
+import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 
 export const TestComp = () => {
-  const [runAnimeIdx, setRunAnimeIdx] = useState(-1);
-
   return (
     <div
       className="w-full min-h-[40rem] pt-24 pb-12"
@@ -17,26 +22,8 @@ export const TestComp = () => {
       }}
     >
       <div className="container flex items-center flex-col">
-        <Title_section
-        // title_isRunAnime={runAnimeIdx > -1}
-        // title_setIsRunAnime={(toggle) => {
-        //   setRunAnimeIdx(toggle ? 0 : -1);
-        // }}
-        // content_isRunAnime={runAnimeIdx > 0}
-        // content_setIsRunAnime={(toggle) => {
-        //   setRunAnimeIdx(toggle ? 1 : 0);
-        // }}
-        />
-        <ToggleBox_section
-        // title_isRunAnime={runAnimeIdx > 1}
-        // title_setIsRunAnime={(toggle) => {
-        //   setRunAnimeIdx(toggle ? 2 : 1);
-        // }}
-        // isRunAnime={runAnimeIdx > 2}
-        // setIsRunAnime={(toggle) => {
-        //   setRunAnimeIdx(toggle ? 3 : 2);
-        // }}
-        />
+        <Title_section />
+        <ToggleBox_section />
       </div>
     </div>
   );
@@ -192,5 +179,104 @@ const ToggleBox_section = () => {
         </div>
       </AnimeWrapper_div>
     </section>
+  );
+};
+
+export const BodyComp_slide = () => {
+  const titleId = useId();
+  return (
+    <div
+      className="flex justify-center py-20"
+      style={{
+        backgroundImage: "url(/block_sect04-bg.jpg)",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <section className="container text-white font-bold w-[60rem]">
+        <div className="py-12 h-48 relative" id={titleId}>
+          <AnimeWrapper_div className="h-full" isTarget_parent>
+            <h1 className="text-4xl leading-[3rem]">
+              2,500명의 <span className="text-purple-500">게임 개발자</span>
+              <br />
+              우리 경일의 졸업생입니다.
+            </h1>
+          </AnimeWrapper_div>
+        </div>
+        <Swiper
+          modules={[Navigation]}
+          style={{
+            display: "flex",
+            flexDirection: "column-reverse",
+            width: "100%",
+            overflow: "visible",
+          }}
+          slidesPerView={3}
+          spaceBetween={30}
+          navigation={{
+            disabledClass: "disabled-button",
+          }}
+          wrapperClass="!h-[20rem]"
+          onSwiper={(swiper) => {
+            const target = document.getElementById(titleId);
+            if (target) {
+              target.append(swiper.navigation.nextEl, swiper.navigation.prevEl);
+            }
+            swiper.navigation.nextEl.classList =
+              "after:content-['next'] pl-[1.1rem] pr-[0.9rem] flex items-center h-[2.5rem] cursor-pointer absolute top-[4.75rem] right-0 border border-white rounded-full text-sm";
+            swiper.navigation.nextEl.style.fontFamily = "swiper-icons";
+
+            swiper.navigation.prevEl.classList =
+              "after:content-['prev'] pl-[0.9rem] pr-[1.1rem] flex items-center h-[2.5rem] cursor-pointer absolute top-[4.75rem] right-12 border border-white rounded-full text-sm";
+            swiper.navigation.prevEl.style.fontFamily = "swiper-icons";
+            if (swiper.activeIndex === 0) {
+              swiper.navigation.prevEl.classList.add("disabled-button");
+            }
+            if (swiper.activeIndex === swiper.slides.length - 1) {
+              swiper.navigation.nextEl.classList.add("disabled-button");
+            }
+          }}
+        >
+          {[
+            ["인생에서 가장", "후회하지 않는 선택", "익명", "회사명"],
+            ["test2", "테스트2", "익명", "회사명"],
+            ["test3", "테스트3", "익명", "회사명"],
+            ["test4", "테스트4", "익명", "회사명"],
+            ["test5", "테스트5", "익명", "회사명"],
+            ["test6", "테스트6", "익명", "회사명"],
+            ["test7", "테스트7", "익명", "회사명"],
+            ["test8", "테스트8", "익명", "회사명"],
+          ].map((v, idx) => (
+            <SwiperSlide className="bg-blue-300 rounded-md" key={idx}>
+              <div className="flex flex-col items-center justify-center gap-5 w-full h-full text-center">
+                <div className="text-[1.4rem] font-semibold">
+                  {v[0]}
+                  <br />
+                  {v[1]}
+                </div>
+                <div className={"text-sm"}>
+                  {v[2]}
+                  <span className="before:inline-block before:content-[''] before:border-l before:border-white before:py-[0.3rem] before:pr-1 pl-1">
+                    {v[3]}
+                  </span>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <AnimeWrapper_div className="text-center">
+          <h2 className="pt-12 pb-3 text-2xl">
+            “이제 여러분의 미래를 바꿀 차례입니다”
+            <br />
+          </h2>
+          <Link href={"#"} className="text-purple-500 text-sm">
+            <h3 className="inline-block">졸업생 이야기 보러가기</h3>
+            <ArrowUpRightIcon
+              className="inline-block h-[0.8rem] pl-[0.1rem]"
+              strokeWidth={2.5}
+            />
+          </Link>
+        </AnimeWrapper_div>
+      </section>
+    </div>
   );
 };

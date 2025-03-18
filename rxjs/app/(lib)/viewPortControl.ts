@@ -30,3 +30,17 @@ export const mkOnViewportLeave =
     const boundary = window.scrollY + window.innerHeight;
     if (boundary < ref.current!.offsetTop && isRunAnime) setIsRunAnime(false);
   };
+
+export const mkOnViewportLeave_parent =
+  (
+    ref:
+      | React.RefObject<HTMLDivElement | null>
+      | React.RefObject<HTMLElement | null>,
+    setIsRunAnime: (toggle: boolean) => void
+  ) =>
+  (isRunAnime: boolean) => {
+    const boundary = window.scrollY + window.innerHeight;
+    const parent = ref.current!.parentElement!.offsetTop;
+    const target = ref.current!.offsetTop;
+    if (boundary < parent + target && isRunAnime) setIsRunAnime(false);
+  };
