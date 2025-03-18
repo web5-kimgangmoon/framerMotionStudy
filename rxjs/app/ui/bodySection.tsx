@@ -6,6 +6,8 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import clsx from "clsx";
+import Link from "next/link";
+import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 
 export const TestComp = () => {
   return (
@@ -209,7 +211,6 @@ export const BodyComp_slide = () => {
             overflow: "visible",
           }}
           slidesPerView={3}
-          // slidesPerGroup={3}
           spaceBetween={30}
           navigation={{
             disabledClass: "disabled-button",
@@ -245,8 +246,8 @@ export const BodyComp_slide = () => {
             ["test7", "테스트7", "익명", "회사명"],
             ["test8", "테스트8", "익명", "회사명"],
           ].map((v, idx) => (
-            <SwiperSlide className="bg-blue-300" key={idx}>
-              <div className="w-full h-full flex flex-col items-center justify-center text-center gap-5">
+            <SwiperSlide className="bg-blue-300 rounded-md" key={idx}>
+              <div className="flex flex-col items-center justify-center gap-5 w-full h-full text-center">
                 <div className="text-[1.4rem] font-semibold">
                   {v[0]}
                   <br />
@@ -263,8 +264,17 @@ export const BodyComp_slide = () => {
           ))}
         </Swiper>
         <AnimeWrapper_div className="text-center">
-          <h2 className="block">“이제 여러분의 미래를 바꿀 차례입니다”</h2>
-          <h3 className="blcok">졸업생 이야기 보러가기</h3>
+          <h2 className="pt-12 pb-3 text-2xl">
+            “이제 여러분의 미래를 바꿀 차례입니다”
+            <br />
+          </h2>
+          <Link href={"#"} className="text-purple-500 text-sm">
+            <h3 className="inline-block">졸업생 이야기 보러가기</h3>
+            <ArrowUpRightIcon
+              className="inline-block h-[0.8rem] pl-[0.1rem]"
+              strokeWidth={2.5}
+            />
+          </Link>
         </AnimeWrapper_div>
       </section>
     </div>
