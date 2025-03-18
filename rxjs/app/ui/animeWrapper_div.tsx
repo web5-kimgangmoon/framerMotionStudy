@@ -11,10 +11,14 @@ const AnimeWrapper_div = ({
   children,
   className,
   isTarget_parent,
+  delay,
+  duration,
 }: {
   children: React.ReactNode | string;
   className?: string;
   isTarget_parent?: boolean;
+  delay?: number;
+  duration?: number;
 }) => {
   const ref = useRef<null | HTMLDivElement>(null);
   const [isRunAnime, setIsRunAnime] = useState(false);
@@ -38,6 +42,10 @@ const AnimeWrapper_div = ({
       animate={upAnime_animate(isRunAnime)}
       onViewportEnter={onViewportEnter}
       onViewportLeave={() => onViewportLeave(isRunAnime)}
+      transition={{
+        delay: isRunAnime ? delay : 0,
+        duration: isRunAnime ? duration : 0,
+      }}
       ref={ref}
     >
       {children}
