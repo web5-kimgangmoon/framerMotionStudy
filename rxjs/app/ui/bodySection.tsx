@@ -7,9 +7,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import clsx from "clsx";
 import Link from "next/link";
-import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
+import { ArrowUpRightIcon, FaceFrownIcon } from "@heroicons/react/24/outline";
 
-export const TestComp = () => {
+export const BodyComp_7 = () => {
   return (
     <div
       className="w-full min-h-[40rem] pt-24 pb-12"
@@ -182,7 +182,7 @@ const ToggleBox_section = () => {
   );
 };
 
-export const BodyComp_slide = () => {
+export const BodyComp_8 = () => {
   const titleId = useId();
   return (
     <div
@@ -276,6 +276,75 @@ export const BodyComp_slide = () => {
             />
           </Link>
         </AnimeWrapper_div>
+      </section>
+    </div>
+  );
+};
+
+export const BodyComp_18 = () => {
+  return (
+    <div
+      className="py-36"
+      style={{
+        backgroundImage: "url('block_sect08_bg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <section className="container flex flex-col items-center justify-center text-center text-white font-bold">
+        <AnimeWrapper_div duration={0.5}>
+          <h1 className="text-3xl pb-12">게임 개발자가 되고 싶다면?</h1>
+        </AnimeWrapper_div>
+        <ul className="flex gap-5">
+          {[
+            [
+              "열정만 가지고 오세요!",
+              "참여자의 80%가 비전공자이며 취업까지 과정은",
+              "누구나가 도달 할 수 있도록 설계되었습니다.",
+              "그렇다고 쉽진 않아요!",
+            ],
+            [
+              "누구나 할 수 있습니다!",
+              "코딩 경험이 없어도, 게임 제작의 경험이 없어도,",
+              "사회적 배경에 관계 없이, 비용 걱정 없이",
+            ],
+          ].map((v, idx) => (
+            <AnimeWrapper_div
+              key={idx}
+              delay={idx === 0 ? undefined : 0.1}
+              duration={1}
+            >
+              <li
+                className={clsx(
+                  "rounded-md p-8 border h-full",
+                  idx === 0
+                    ? "border-purple-500 bg-purple-600/30"
+                    : "border-indigo-500 bg-indigo-600/30"
+                )}
+              >
+                <h2
+                  className={clsx(
+                    "pb-6 text-xl",
+                    idx === 0 ? "text-purple-500" : "text-indigo-500"
+                  )}
+                >
+                  {v[0]}
+                </h2>
+                <p className="pb-3">
+                  {v[1]}
+                  <br />
+                  {v[2]}
+                </p>
+                {idx === 0 && (
+                  <h5 className="flex justify-center items-start">
+                    <span>그렇다고 쉽진 않아요!</span>
+                    <FaceFrownIcon className="inline-block w-5" />
+                  </h5>
+                )}
+              </li>
+            </AnimeWrapper_div>
+          ))}
+        </ul>
       </section>
     </div>
   );
